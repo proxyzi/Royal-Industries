@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Royal Industries – Turned Components Catalog</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500&display=swap">
+<style>
+:root{--bg:#eef2f7;--card:#fff;--ink:#0a1f4d;--mute:#51607a;--line:#cfd8e6;--blue:#0b3d91;--cyan:#1aa3e8;--gold:#c9983a;--stage:#dfe6f0;--stage2:#f6f9fc;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#121c30;--ink:#e7edf8;--mute:#9fb0cc;--line:#25344f;--blue:#4c8dff;--stage:#16233d;--stage2:#223458}}
+:root[data-theme="dark"]{--bg:#0b1220;--card:#121c30;--ink:#e7edf8;--mute:#9fb0cc;--line:#25344f;--blue:#4c8dff;--stage:#16233d;--stage2:#223458}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Barlow,system-ui,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 16px 40px}
+.brand{font:700 clamp(38px,9vw,64px)/.9 "Barlow Condensed","Arial Narrow",sans-serif;color:var(--blue)}
+.brand small{display:block;color:var(--cyan);font-size:.62em}
+.tag{color:var(--mute);margin:8px 0 22px}
+h2{font:700 28px/1.1 "Barlow Condensed","Arial Narrow",sans-serif;margin:30px 0 12px}
+.mats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.mats button{padding:9px 14px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);font:600 15px Barlow,sans-serif;cursor:pointer}
+.mats button[aria-pressed=true]{background:var(--blue);color:#fff;border-color:var(--blue)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.view{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:radial-gradient(circle at 50% 40%,var(--stage2),var(--stage))}
+canvas#v{display:block;width:100%;height:min(62vh,440px);touch-action:none;cursor:grab}
+.cap{position:absolute;left:14px;top:12px;pointer-events:none}
+.cap b{display:block;font:700 30px/1 "Barlow Condensed","Arial Narrow",sans-serif}
+.cap span{color:var(--mute);font-size:14px}
+.ctl{position:absolute;right:12px;bottom:12px;display:flex;gap:8px}
+.ctl button,.enq{padding:9px 14px;border:0;border-radius:4px;background:var(--blue);color:#fff;font:600 15px Barlow,sans-serif;cursor:pointer;text-decoration:none}
+.hint{position:absolute;left:14px;bottom:12px;font-size:13px;color:var(--mute);pointer-events:none}
+.desc{margin:12px 0 0;color:var(--mute);max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.t{border:1px solid var(--line);border-radius:6px;background:var(--card);padding:6px 6px 10px;color:var(--ink);font:600 15px Barlow,sans-serif;cursor:pointer;text-align:center}
+.t img{display:block;width:100%;aspect-ratio:1;border-radius:4px;background:var(--stage)}
+.t[aria-pressed=true]{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue)}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.feat div{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:4px;padding:12px 14px}
+.feat b{display:block;font:700 19px "Barlow Condensed",sans-serif}
+.feat span{color:var(--mute);font-size:15px}
+.contact{margin-top:30px;background:var(--blue);color:#fff;border-radius:6px;padding:20px;display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;justify-content:space-between}
+.contact a{color:#fff;text-decoration:none;font:700 24px "Barlow Condensed",sans-serif}
+.contact p{margin:0;font-size:14px;opacity:.85}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="brand">ROYAL<small>INDUSTRIES</small></div>
+<p class="tag">Your trusted partner in turned components manufacturing. Precision, quality, reliability, long lasting.</p>
+
+<h2>Material</h2>
+<div class="mats" id="mats" role="group" aria-label="Material"></div>
+<div class="view">
+<canvas id="v" aria-label="Interactive 3D view of the selected component"></canvas>
+<div class="cap"><b id="nm"></b><span id="mt"></span></div>
+<div class="hint">Drag to turn 360°</div>
+<div class="ctl"><button id="sp">Pause spin</button><a class="enq" id="enq" href="#">Enquire</a></div>
+</div>
+<p class="desc" id="ds"></p>
+
+<h2>Types of turned components</h2>
+<div class="grid" id="grid"></div>
+
+<h2>Why Royal Industries</h2>
+<div class="feat">
+<div><b>High precision tolerances</b><span>Accurate parts that fit the first time.</span></div>
+<div><b>Custom design &amp; development</b><span>We manufacture as per your drawing or sample.</span></div>
+<div><b>Consistent quality</b><span>The same finish and size, batch after batch.</span></div>
+<div><b>On-time delivery</b><span>CNC turning, VMC machining and sliding head lathe.</span></div>
+</div>
+
+<div class="contact">
+<div><p>Contact us</p><a href="tel:8130560387">8130560387</a> &nbsp; <span>Delhi NCR</span></div>
+<a href="mailto:manufacturingcomponents@gmail.com" style="font-size:19px">manufacturingcomponents@gmail.com</a>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+var MATS={"Mild steel (MS)":0x838b93,"Stainless steel (SS)":0xd3d9df,"Brass":0xd0a040,"Aluminium":0xbcc6d0};
+// items: c=plain cylinder, t=threaded, h=hex; [kind, length, radius]; b=through bore
+var PARTS=[
+{n:"Shafts",b:0,s:[["t",.7,.3],["c",.3,.4],["c",1.6,.5],["c",.3,.4],["t",.7,.3]],d:"Stepped and plain shafts with shoulders, grooves and threaded ends."},
+{n:"Pins",b:0,s:[["c",.12,.2],["c",3,.12]],d:"Dowel, locating and headed pins in close tolerances."},
+{n:"Bushes",b:.4,s:[["c",.2,.85],["c",1,.6]],d:"Plain and flanged bushes, bored to size."},
+{n:"Spacers",b:.25,s:[["c",.7,.55]],d:"Spacer sleeves cut to exact length."},
+{n:"Adaptors",b:.25,s:[["t",.7,.4],["h",.5,.7],["t",.6,.55]],d:"Hex adaptors that join two different thread sizes."},
+{n:"Nipples",b:.28,s:[["t",.8,.45],["h",.4,.65],["t",.8,.45]],d:"Hex nipples threaded at both ends."},
+{n:"Fittings",b:.28,s:[["h",.45,.7],["c",.2,.55],["t",.8,.45],["h",.45,.7]],d:"Turned fittings for fluid and pneumatic lines."},
+{n:"Couplings",b:.38,s:[["c",.15,.7],["c",1.5,.6],["c",.15,.7]],d:"Sleeve couplings that join shafts and pipes."},
+{n:"Studs",b:0,s:[["t",3,.25]],d:"Fully threaded studs in any length."},
+{n:"Hex nuts",b:.3,s:[["h",.55,.7]],d:"Hex nuts in standard and special sizes."},
+{n:"Washers",b:.45,s:[["c",.1,.9]],d:"Flat washers turned to your size."},
+{n:"Special components",b:.12,s:[["t",.6,.3],["c",.5,.6],["c",.12,.38],["c",.5,.6],["h",.5,.5],["c",.8,.28]],d:"Any shape, made as per your drawing or sample."}
+];
+var T=THREE,mat,cur=0,auto=true,drag=false;
+function build(p){
+ var m=new T.MeshPhongMaterial({color:mat,shininess:100,specular:0x999999,side:T.DoubleSide}),g=new T.Group(),y=0,b=p.b;
+ function add(geo,py){var o=new T.Mesh(geo,m);o.position.y=py;g.add(o)}
+ p.s.forEach(function(it){var k=it[0],L=it[1],r=it[2];
+  if(k=="h"){var sh=new T.Shape(),i;for(i=0;i<6;i++){var a=i*Math.PI/3;i?sh.lineTo(r*Math.cos(a),r*Math.sin(a)):sh.moveTo(r,0)}
+   if(b){var h=new T.Path();h.absarc(0,0,b,0,6.2832,true);sh.holes.push(h)}
+   var ge=new T.ExtrudeGeometry(sh,{depth:L,bevelEnabled:false});ge.rotateX(-Math.PI/2);add(ge,y)}
+  else{
+   if(k=="t"){var pts=[],pt=.1,n=Math.round(L/pt),j;for(j=0;j<n;j++){pts.push(new T.Vector2(r,j*pt),new T.Vector2(r-.05,j*pt+pt/2))}pts.push(new T.Vector2(r,L));add(new T.LatheGeometry(pts,48),y)}
+   else{var c=new T.CylinderGeometry(r,r,L,48,1,true);c.translate(0,L/2,0);add(c,y)}
+   [0,L].forEach(function(o,q){var rg=new T.RingGeometry(b,r,48);rg.rotateX(q?-Math.PI/2:Math.PI/2);add(rg,y+o)})}
+  if(b){var ci=new T.CylinderGeometry(b,b,L,32,1,true);ci.translate(0,L/2,0);add(ci,y)}
+  y+=L});
+ var bx=new T.Box3().setFromObject(g),c=bx.getCenter(new T.Vector3());g.position.set(-c.x,-c.y,-c.z);
+ var tilt=new T.Group();tilt.add(g);tilt.rotation.z=1.0;
+ var pv=new T.Group();pv.add(tilt);pv.rotation.x=.25;
+ var sc=new T.Scene();sc.add(pv,new T.AmbientLight(0xffffff,.55),new T.HemisphereLight(0xffffff,0x8899aa,.6));
+ var d1=new T.DirectionalLight(0xffffff,.9);d1.position.set(3,4,5);var d2=new T.DirectionalLight(0xbcd4ff,.5);d2.position.set(-4,-1,3);sc.add(d1,d2);
+ return{sc:sc,pv:pv,R:bx.getSize(new T.Vector3()).length()/2}}
+var cam=new T.PerspectiveCamera(35,1,.1,100),cv=document.getElementById("v"),
+ R=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true}),
+ TR=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true}),S;
+TR.setSize(240,240);R.setPixelRatio(Math.min(devicePixelRatio,2));
+function fit(s){cam.position.set(0,0,s.R*3.3);cam.lookAt(0,0,0)}
+function size(){var w=cv.clientWidth,h=cv.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+function thumbs(){var g=document.getElementById("grid");g.innerHTML="";
+ PARTS.forEach(function(p,i){var s=build(p),tc=new T.PerspectiveCamera(35,1,.1,100);tc.position.set(0,0,s.R*3.1);s.pv.rotation.y=.6;TR.render(s.sc,tc);
+  var b=document.createElement("button");b.className="t";b.setAttribute("aria-pressed",i==cur);
+  b.innerHTML='<img alt="" src="'+TR.domElement.toDataURL()+'">'+p.n;b.onclick=function(){pick(i)};g.appendChild(b)})}
+function pick(i){cur=i;var p=PARTS[i];S=build(p);S.pv.rotation.y=0;fit(S);
+ nm.textContent=p.n;mt.textContent=matName;ds.textContent=p.d+" Available in MS, SS, brass and aluminium.";
+ enq.href="mailto:manufacturingcomponents@gmail.com?subject="+encodeURIComponent("Enquiry: "+p.n+" ("+matName+")");
+ [].forEach.call(grid.children,function(e,j){e.setAttribute("aria-pressed",j==i)})}
+var nm=document.getElementById("nm"),mt=document.getElementById("mt"),ds=document.getElementById("ds"),enq=document.getElementById("enq"),grid=document.getElementById("grid"),matName;
+Object.keys(MATS).forEach(function(k,i){var b=document.createElement("button");b.textContent=k;b.setAttribute("aria-pressed",i==0);
+ b.onclick=function(){[].forEach.call(mats.children,function(e){e.setAttribute("aria-pressed",e==b)});mat=MATS[k];matName=k;thumbs();pick(cur)};
+ document.getElementById("mats").appendChild(b);if(!i){mat=MATS[k];matName=k}});
+var lx,ly;
+cv.addEventListener("pointerdown",function(e){drag=true;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId);cv.style.cursor="grabbing"});
+cv.addEventListener("pointermove",function(e){if(!drag)return;S.pv.rotation.y+=(e.clientX-lx)*.012;S.pv.rotation.x=Math.max(-1.4,Math.min(1.4,S.pv.rotation.x+(e.clientY-ly)*.012));lx=e.clientX;ly=e.clientY});
+["pointerup","pointercancel"].forEach(function(t){cv.addEventListener(t,function(){drag=false;cv.style.cursor="grab"})});
+document.getElementById("sp").onclick=function(){auto=!auto;this.textContent=auto?"Pause spin":"Start spin"};
+addEventListener("resize",size);
+thumbs();pick(0);size();
+(function loop(){if(auto&&!drag)S.pv.rotation.y+=.008;R.render(S.sc,cam);requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>
